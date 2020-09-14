@@ -23,3 +23,9 @@ dotnet build src &&  cdk deploy --profile regionaledge
 
 why js lambda
 - too much pain to figure out c# dep
+
+
+test lambda
+- take in url
+- call get for 14mins
+- post latency metrics for each call to cloudwatch

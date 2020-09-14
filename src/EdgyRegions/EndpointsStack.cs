@@ -85,6 +85,8 @@ namespace EdgyRegions
                     }
                 }
             });
+            new CfnOutput(this, name + "distId", new CfnOutputProps { Value = dist.DistributionDomainName });
+
             return dist;
         }
 

@@ -20,3 +20,6 @@ cdk bootstrap --profile regionaledge
 dotnet build src &&  cdk deploy --profile regionaledge
 
 --profile regionaledge
+
+why js lambda
+- too much pain to figure out c# dep

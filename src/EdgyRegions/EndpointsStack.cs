@@ -32,6 +32,7 @@ namespace EdgyRegions
                 MinimumCompressionSize = 1
             });
             edgeCompressedApi.Root.AddMethod("GET", fnIntegration);
+            generateCloudFront(edgeCompressedApi, "edgeCompressed");
 
             var edgeUncompressedApi = new RestApi(this, "edgeUncompressedApi", new RestApiProps
             {
@@ -39,6 +40,7 @@ namespace EdgyRegions
                 // MinimumCompressionSize = -1 // default is disabled 
             });
             edgeUncompressedApi.Root.AddMethod("GET", fnIntegration);
+            generateCloudFront(edgeUncompressedApi, "edgeUncompressed");
 
             var regionalCompressedApi = new RestApi(this, "regionalCompressedApi", new RestApiProps
             {
@@ -46,27 +48,47 @@ namespace EdgyRegions
                 MinimumCompressionSize = 1
             });
             regionalCompressedApi.Root.AddMethod("GET", fnIntegration);
+            generateCloudFront(regionalCompressedApi, "regionalCompressed");
 
-            var regionalUncompressedApi = new RestApi(this, "regionalUncompressedApi", new RestApiProps
+            var regionalUncompressedApi = new RestApi(this, "regionalUncompressed", new RestApiProps
             {
                 EndpointConfiguration = new EndpointConfiguration { Types = new EndpointType[] { EndpointType.REGIONAL } },
                 // MinimumCompressionSize = -1 // default is disabled 
             });
             regionalUncompressedApi.Root.AddMethod("GET", fnIntegration);
+            generateCloudFront(regionalUncompressedApi, "regionalUncompressed");
 
-            // var edgeCompressed = new CloudFrontWebDistribution(this, "edgeCompressed", new CloudFrontWebDistributionProps
-            // {
-            //     OriginConfigs = new[]{
-            //         new SourceConfiguration{
-            //             Behaviors = new IBehavior[]{
-            //                 new Behavior{}
-            //                 },
-            //             CustomOriginSource = new CustomOriginConfig{
-            //                 DomainName = edgeCompressedApi.DomainName.DomainName, // defaults to prod
-            //             }
-            //         }
-            //     }
-            // });
+
         }
+        private CloudFrontWebDistribution generateCloudFront(RestApi api, string name)
+        {
+
+            var dist = new CloudFrontWebDistribution(this, name + "Distribution", new CloudFrontWebDistributionProps
+            {
+                PriceClass = PriceClass.PRICE_CLASS_ALL,
+
+                OriginConfigs = new[]{
+                    new SourceConfiguration{
+                        Behaviors = new IBehavior[]{
+                            new Behavior{
+                                Compress=true,
+                                IsDefaultBehavior=true,
+                                DefaultTtl = Duration.Seconds(0)
+
+                                }
+                        },
+                        CustomOriginSource = new CustomOriginConfig{
+                            DomainName = api.RestApiId + ".execute-api.us-east-1.amazonaws.com", // lazy but quick
+                            OriginPath = "/prod",
+
+                        }
+                    }
+                }
+            });
+            return dist;
+        }
+
     }
+
+
 }

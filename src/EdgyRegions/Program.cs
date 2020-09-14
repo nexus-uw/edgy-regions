@@ -10,7 +10,10 @@ namespace EdgyRegions
         public static void Main(string[] args)
         {
             var app = new App();
-            new EdgyRegionsStack(app, "EdgyRegionsStack");
+
+            new EndpointsStack(app, "Endpoints", new StackProps { Env = new Amazon.CDK.Environment { Region = "us-east-1" } });
+
+            // create test lambdas in every region.
             app.Synth();
         }
     }

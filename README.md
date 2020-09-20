@@ -6,6 +6,7 @@ SEE <blog url> for full write up
 # purpose
 test out the best combination of API Gateway endpoint type + compression for use behind a CloudFront distribution
 
+![arch setup](https://github.com/nexus-uw/edgy-regions/blob/master/basic%20aws%20diagram.png?raw=true)
 
 # how to set up + deploy
 - bootstrap cdk ```cdk bootstrap```

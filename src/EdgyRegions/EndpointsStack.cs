@@ -17,7 +17,7 @@ namespace EdgyRegions
             var fn = new Function(this, "myfunction", new FunctionProps
             {
                 Runtime = Runtime.NODEJS_12_X,
-                Code = Code.FromAsset("src/EdgyRegions/resources"),
+                Code = Code.FromAsset("src/EdgyRegions/resources/endpoint"),
                 Handler = "lazy.handler"
             });
             var fnIntegration = new LambdaIntegration(fn, new LambdaIntegrationOptions
@@ -66,7 +66,7 @@ namespace EdgyRegions
             var dist = new CloudFrontWebDistribution(this, name + "Distribution", new CloudFrontWebDistributionProps
             {
                 PriceClass = PriceClass.PRICE_CLASS_ALL,
-
+                Comment = name,
                 OriginConfigs = new[]{
                     new SourceConfiguration{
                         Behaviors = new IBehavior[]{
